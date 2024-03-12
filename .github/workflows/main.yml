@@ -47,11 +47,11 @@ jobs:
       run: cat ~/.kube/config
 
     - name: Check Kubernetes cluster status
-      run: kubectl cluster-info
+      run: kubectl cluster-info dump
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl cluster-info dump
+        kubectl cluster-info
         kubectl get pods -A
         
   
