@@ -65,11 +65,9 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        echo "$KUBE_CONFIG_DATA" | base64 --decode > kubeconfig.yaml
+        echo "$KUBE_CONFIG_DATA" > kubeconfig.yaml
         export KUBECONFIG=$(pwd)/kubeconfig.yaml
-        kubectl set image deployment/nginx-deployment nginx-container=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/nginx-k8s:${{ github.sha }}
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        kubectl get pods -A
 
 
         
