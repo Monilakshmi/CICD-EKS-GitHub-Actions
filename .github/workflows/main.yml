@@ -15,13 +15,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up AWS credentials
+    - name: Configure AWS credentials
+      run: |
+        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        aws configure set region $AWS_REGION
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: ap-south-1
-        AWS_DEFAULT_OUTPUT: json
-      run: echo "AWS credentials are set up"
+        AWS_REGION: ${{ secrets.AWS_REGION }}
 
     - name: Execute AWS CLI command
       run: aws sts get-caller-identity
