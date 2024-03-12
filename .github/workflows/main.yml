@@ -46,7 +46,7 @@ jobs:
 
     - name: Update kubeconfig with token
       run: |
-        kubectl config set-credentials my-eks-cluster --token=$(cat ~/.kube/token)
+        kubectl config set-credentials runner --token=$(cat ~/.kube/token)
         kubectl config set-context my-eks-context --cluster=eks-task --user=runner
         kubectl config use-context my-eks-context
 
