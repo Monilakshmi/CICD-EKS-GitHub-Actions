@@ -64,5 +64,4 @@ jobs:
         kubectl config view
         kubectl config current-context
         kubectl get nodes -A -o wide
-        kubectl apply -f deployment.yaml --validate=false
-        kubectl apply -f service.yaml --validate=false
+        
