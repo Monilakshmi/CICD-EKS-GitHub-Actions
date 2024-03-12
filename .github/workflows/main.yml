@@ -43,6 +43,13 @@ jobs:
         aws eks --region ${{ secrets.AWS_REGION }} get-token --cluster-name eks-task > ~/.kube/token
       shell: bash
 
+
+    - name: Update kubeconfig with token
+      run: |
+        kubectl config set-credentials my-eks-cluster --token=$(cat ~/.kube/token)
+        kubectl config set-context my-eks-context --cluster=eks-task --user=runner
+        kubectl config use-context my-eks-context
+
     - name: Print kubeconfig
       run: cat ~/.kube/config
 
