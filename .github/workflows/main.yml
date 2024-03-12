@@ -53,6 +53,7 @@ jobs:
         echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
         source ~/.bashrc
         kubectl version --client
+        aws --version
 
     - name: Update kube config
       run: aws eks update-kubeconfig --name eks-task --region ${{ secrets.AWS_REGION }}
