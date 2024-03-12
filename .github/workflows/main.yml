@@ -61,11 +61,13 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
 
+
+
     - name: Deploy to Kubernetes
-      run: |
-        aws eks describe-cluster --name eks-task --region ap-south-1
-        cat /home/runner/.kube/config
-        echo "--------------------------------------------------------"
-        kubectl get nodes -A -o wide
-        
+      uses: appleboy/kubectl@master
+      with:
+        args: set image deployment/nginx-deployment nginx-container=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/nginx-k8s:${{ github.sha }}
+      env:
+        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+
         
