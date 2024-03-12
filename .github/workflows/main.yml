@@ -30,13 +30,13 @@ jobs:
     - name: Build and Push Docker Image to ECR
       run: |
         # Authenticate Docker with ECR
-        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
+        aws ecr get-login-password --region ap-south-1 ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
 
         # Build NGINX Docker image
         docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks .
 
         # Tag the Docker image
-        docker tag ${{ secrets.AWS_ECR_REGISTRY }}/nginx-ecr:latest ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks:latest
+        docker tag ${{ secrets.AWS_ECR_REGISTRY }}/cicd:latest ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks:latest
 
         # Push the Docker image to ECR
         docker push ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks:latest
