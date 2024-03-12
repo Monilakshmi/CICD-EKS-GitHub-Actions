@@ -65,8 +65,6 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        echo "$KUBE_CONFIG_DATA" > kubeconfig.yaml
-        export KUBECONFIG=$(pwd)/kubeconfig.yaml
         kubectl get pods -A
 
 
