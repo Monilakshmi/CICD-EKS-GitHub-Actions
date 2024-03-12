@@ -49,6 +49,7 @@ jobs:
         kubectl config set-credentials runner --token=$(cat ~/.kube/token)
         kubectl config set-context my-eks-context --cluster=eks-task --user=runner
         kubectl config use-context my-eks-context
+      shell: bash
 
     - name: Print kubeconfig
       run: cat ~/.kube/config
