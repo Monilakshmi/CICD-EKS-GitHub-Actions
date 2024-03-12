@@ -37,8 +37,11 @@ jobs:
       run: |
         aws --version
 
-    - name: Update kube config
-      run: aws eks update-kubeconfig --name eks-task --region ap-south-1
+    - name: Authenticate with EKS
+      run: |
+        aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name eks-task
+        aws eks --region ${{ secrets.AWS_REGION }} get-token --cluster-name eks-task > ~/.kube/token
+      shell: bash
 
     - name: Print kubeconfig
       run: cat ~/.kube/config
