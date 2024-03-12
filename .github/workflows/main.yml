@@ -8,25 +8,20 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up AWS CLI
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name eks-task --region $AWS_REGION
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
 
-    - name: Use Node.js 20
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
-      
     - name: Install Docker
       run: |
         sudo apt-get update
@@ -37,21 +32,15 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y awscli
 
-    - name: Build and Push Docker Image to ECR
+    - name: Build Docker image
       run: |
-        # Authenticate Docker with ECR
-        echo ${{ secrets.AWS_ACCESS_KEY_ID }} | docker login -u AWS --password-stdin ${{ secrets.AWS_ECR_REGISTRY }}
+        docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/nginx-k8s:${{ github.sha }} .
+        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/nginx-k8s:${{ github.sha }}
 
-        # Build NGINX Docker image
-        docker build -t ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks .
+    - name: Authenticate with ECR
+      run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-        # Tag the Docker image
-        docker tag ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks:latest ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks:latest
-
-        # Push the Docker image to ECR
-        docker push ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks:latest
-
-    - name: Configure kubectl
+    - name: Deploy to Kubernetes
       run: |
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
