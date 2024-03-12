@@ -28,7 +28,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1
         
-
     - name: Execute AWS CLI command
       run: aws sts get-caller-identity
 
@@ -47,7 +46,6 @@ jobs:
 
     - name: Authenticate with EKS
       run: aws eks update-kubeconfig --name eks-task
-
 
     - name: Check Kubernetes cluster status
       run: kubectl cluster-info
