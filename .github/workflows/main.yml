@@ -43,6 +43,11 @@ jobs:
         aws eks --region ${{ secrets.AWS_REGION }} get-token --cluster-name eks-task > ~/.kube/token
       shell: bash
 
+ 
+    - name: Print kubeconfig
+      run: |
+        cat ~/.kube/config
+        cat ~/.kube/token
 
     - name: Update kubeconfig with token
       run: |
@@ -50,9 +55,6 @@ jobs:
         kubectl config set-context my-eks-context --cluster=eks-task --user=runner
         kubectl config use-context my-eks-context
       shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
-
-    - name: Print kubeconfig
-      run: cat ~/.kube/config
 
     - name: Check Kubernetes cluster status
       run: kubectl cluster-info dump
