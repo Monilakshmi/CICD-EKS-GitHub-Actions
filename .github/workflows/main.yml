@@ -46,13 +46,13 @@ jobs:
 
     - name: Authenticate with EKS
       run: |
-        aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name eks-task
+        aws eks update-kubeconfig --name eks-task --region ap-south-1
         aws eks --region ${{ secrets.AWS_REGION }} get-token --cluster-name eks-task > ~/.kube/token
       shell: bash
 
 
     - name: Check Kubernetes cluster status
-      run: kubectl cluster-info dump
+      run: kubectl cluster-info
 
     - name: Deploy to Kubernetes
       run: |
