@@ -40,6 +40,12 @@ jobs:
     - name: Update kube config
       run: aws eks update-kubeconfig --name eks-task --region ap-south-1
 
+    - name: Print kubeconfig
+      run: cat ~/.kube/config
+
+    - name: Check Kubernetes cluster status
+      run: kubectl cluster-info
+
     - name: Deploy to Kubernetes
       run: |
         kubectl get pods -A
