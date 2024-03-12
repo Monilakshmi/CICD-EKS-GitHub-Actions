@@ -36,9 +36,6 @@ jobs:
     - name: aws version check
       run: |
         aws --version
-        aws configure unset aws_access_key_id
-        aws configure unset aws_secret_access_key
-        aws configure unset region
 
     - name: Update kube config
       run: aws eks update-kubeconfig --name eks-task --region ap-south-1
