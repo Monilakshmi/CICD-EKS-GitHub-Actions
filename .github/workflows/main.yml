@@ -46,6 +46,13 @@ jobs:
         aws eks --region ${{ secrets.AWS_REGION }} get-token --cluster-name eks-task > ~/.kube/token
       shell: bash
 
+    - name: Print AWS credentials
+      run: |
+        echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID"
+        echo "AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY"
+        echo "AWS_REGION: $AWS_REGION"
+
+
     - name: Check Kubernetes cluster status
       run: kubectl cluster-info dump
 
