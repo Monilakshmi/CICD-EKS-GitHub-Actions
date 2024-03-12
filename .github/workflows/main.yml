@@ -15,10 +15,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Checkout code
+    - name: Install kubecontrol
       uses: azure/setup-kubectl@v3
       with:
-        version: 'v1.29'
+        version: 'v1.29.0'
       id: install
         
     - name: Configure AWS credentials
