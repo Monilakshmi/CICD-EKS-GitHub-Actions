@@ -65,6 +65,7 @@ jobs:
       run: |
         aws eks describe-cluster --name eks-task --region ap-south-1
         cat /home/runner/.kube/config
+        echo "--------------------------------------------------------"
         kubectl get nodes -A -o wide
         
         
