@@ -47,14 +47,14 @@ jobs:
     - name: Print kubeconfig
       run: |
         cat ~/.kube/config
-        cat ~/.kube/token
+        cat ~/.kube/token > token
 
     - name: Update kubeconfig with token
       run: |
-        kubectl config set-credentials runnera --token=$(cat ~/.kube/token)
+        kubectl config set-credentials runnera --token=$token
         kubectl config set-context my-eks-context --cluster=eks-task --user=runnera
         kubectl config use-context my-eks-context
-      shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+      shell: bash
 
     - name: Check Kubernetes cluster status
       run: kubectl cluster-info dump
