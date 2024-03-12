@@ -56,7 +56,7 @@ jobs:
         aws --version
 
     - name: Update kube config
-      run: aws eks update-kubeconfig --name eks-task --region ${{ secrets.AWS_REGION }}
+      run: aws eks update-kubeconfig --name eks-task --region ap-south-1
 
     - name: Deploy to Kubernetes
       run: |
