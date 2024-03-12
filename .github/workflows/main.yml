@@ -15,15 +15,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
+    - name: Assume IAM role
       run: |
-        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-        aws configure set region $AWS_REGION
+        aws sts assume-role --role-arn arn:aws:iam::339713089664:role/ec2-eks-role --role-session-name GitHubActionsSession > assumed-role.json
+        export AWS_ACCESS_KEY_ID=$(jq -r .Credentials.AccessKeyId assumed-role.json)
+        export AWS_SECRET_ACCESS_KEY=$(jq -r .Credentials.SecretAccessKey assumed-role.json)
+        export AWS_SESSION_TOKEN=$(jq -r .Credentials.SessionToken assumed-role.json)
       env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_DEFAULT_REGION: ap-south-1
+        AWS_DEFAULT_OUTPUT: json
+
 
     - name: Authenticate with ECR
       run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
