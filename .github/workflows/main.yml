@@ -64,5 +64,7 @@ jobs:
     - name: Deploy to Kubernetes
       run: |
         aws eks describe-cluster --name eks-task --region ap-south-1
+        cat /home/runner/.kube/config
         kubectl get nodes -A -o wide
+        
         
