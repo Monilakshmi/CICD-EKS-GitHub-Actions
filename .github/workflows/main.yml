@@ -38,16 +38,13 @@ jobs:
     - name: Authenticate with ECR
       run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
 
-    - name: aws check
+    - name: aws version check
       run: |
         aws --version
+        aws configure list
 
     - name: Update kube config
       run: aws eks update-kubeconfig --name eks-task --region ap-south-1
-
-    - name: aws config list
-      run: |
-        aws configure list
 
     - name: Deploy to Kubernetes
       run: |
