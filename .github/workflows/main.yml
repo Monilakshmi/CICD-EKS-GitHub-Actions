@@ -15,7 +15,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-
     - name: Configure AWS credentials
       run: |
         aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
@@ -25,7 +24,6 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
-
 
     - name: Authenticate with ECR
       run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
@@ -48,8 +46,6 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        whoami
         kubectl get pods -A
         kubectl get nodes
-
-        
+  
