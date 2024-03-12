@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks:latest
+        image: 339713089664.dkr.ecr.ap-south-1.amazonaws.com/cicd-eks:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
