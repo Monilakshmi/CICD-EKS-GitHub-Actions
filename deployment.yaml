@@ -17,5 +17,6 @@ spec:
       containers:
       - name: nginx
         image: ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
