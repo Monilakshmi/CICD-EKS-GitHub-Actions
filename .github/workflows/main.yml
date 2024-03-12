@@ -22,6 +22,11 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
+    - name: Use Node.js 20
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
     - name: Build and Push Docker Image to ECR
       run: |
         # Authenticate Docker with ECR
@@ -36,7 +41,7 @@ jobs:
         # Push the Docker image to ECR
         docker push ${{ secrets.AWS_ECR_REGISTRY }}/cicd-eks:latest
 
-    - name: Deploy NGINX to EKS
+    - name: Configure kubectl
       run: |
         kubectl apply -f deployment.yaml
         kubectl apply -f service.yaml
