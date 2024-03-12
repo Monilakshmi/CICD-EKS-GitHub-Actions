@@ -16,7 +16,15 @@ jobs:
       uses: actions/checkout@v2
 
 
-    
+    - name: Configure AWS credentials
+      run: |
+        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        aws configure set region $AWS_REGION
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
 
 
     - name: Authenticate with ECR
@@ -47,6 +55,8 @@ jobs:
     - name: Deploy to Kubernetes
       run: |
         aws configure list
+        rm ~/.aws/credentials
+        rm ~/.aws/config
         kubectl config view
         kubectl config current-context
         kubectl get nodes -A -o wide
