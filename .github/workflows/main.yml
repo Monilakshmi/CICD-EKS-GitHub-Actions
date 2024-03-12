@@ -44,5 +44,5 @@ jobs:
     - name: Deploy to Kubernetes
       run: |
         kubectl get pods -A
-        kubectl get nodes
+        
   
