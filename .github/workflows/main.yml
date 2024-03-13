@@ -56,5 +56,6 @@ jobs:
         kubectl apply -f service.yaml
         kubectl get pods -A -o wide
         kubectl get svc
+        kubectl get deployments -A -o wide
         
   
